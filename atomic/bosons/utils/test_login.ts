@@ -1,5 +1,5 @@
 import type { LoginFieldsInterface, UserRoleType } from 'atomic'
-import { apiHandle, getAndSetUser } from 'atomic'
+import { apiHandle, getAndSetUser, syncColorsWithDatabase } from 'atomic'
 
 export async function testLogin(role: UserRoleType): Promise<void> {
   const credentials: Record<UserRoleType, LoginFieldsInterface | undefined> = {
@@ -24,6 +24,7 @@ export async function testLogin(role: UserRoleType): Promise<void> {
     data: userCredentials,
     onSuccess: async (): Promise<void> => {
       await getAndSetUser()
+      await syncColorsWithDatabase()
     },
   })
 }

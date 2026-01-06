@@ -12,6 +12,7 @@ import {
   loginInputs,
   registerFields,
   registerInputs,
+  syncColorsWithDatabase,
 } from 'atomic'
 
 export function useAuthForm(): UseAuthFormInterface {
@@ -38,6 +39,7 @@ export function useAuthForm(): UseAuthFormInterface {
       data,
       onSuccess: async (): Promise<void> => {
         await getAndSetUser()
+        await syncColorsWithDatabase()
       },
     })
   }
