@@ -1,4 +1,4 @@
-import { useRouter } from 'nuxt/app'
+import { useRoute, useRouter } from 'nuxt/app'
 
 import type {
   LoginFieldsInterface,
@@ -17,7 +17,9 @@ import {
 
 export function useAuthForm(): UseAuthFormInterface {
   let url: string
+  const route = useRoute()
   const router = useRouter()
+  const lang = (route.params.lang as string) || 'en'
 
   async function submitForm(
     data: LoginFieldsInterface | RegisterFieldsInterface
@@ -48,7 +50,7 @@ export function useAuthForm(): UseAuthFormInterface {
     data: LoginFieldsInterface | RegisterFieldsInterface
   ): Promise<void> {
     await submitForm(data)
-    router.push('/settings#modules')
+    router.push(`/${lang}/settings#modules`)
   }
 
   return {

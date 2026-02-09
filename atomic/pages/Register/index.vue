@@ -8,7 +8,7 @@
             <ad-heading :tag="1" text="Register" />
 
             <ad-paragraph text="Already have an account?">
-              <ad-anchor href="/login" label="Log in!" />
+              <ad-anchor :href="`/${lang}/login`" label="Log in!" />
             </ad-paragraph>
           </div>
         </div>
@@ -60,7 +60,13 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from 'nuxt/app'
+import { computed } from 'vue'
+
 import { isEmpty, passwordsMatch, useAuthForm } from 'atomic'
+
+const route = useRoute()
+const lang = computed(() => (route.params.lang as string) || 'en')
 
 const { submitAndGo, registerFields, registerInputs } = useAuthForm()
 
