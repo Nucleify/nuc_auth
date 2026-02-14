@@ -15,14 +15,16 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from '#app'
+import { useRoute, useRouter } from '#app'
 
 import { testLogin } from 'atomic'
 
+const route = useRoute()
 const router = useRouter()
+const lang = (route.params.lang as string) || 'en'
 
 async function loginAndGo(role: string) {
   await testLogin(role)
-  router.push('/settings#modules')
+  router.push(`/${lang}/settings#modules`)
 }
 </script>
