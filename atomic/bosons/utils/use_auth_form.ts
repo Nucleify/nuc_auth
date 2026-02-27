@@ -10,6 +10,7 @@ import {
   getAndSetUser,
   loginFields,
   loginInputs,
+  navigateToUrl,
   registerFields,
   registerInputs,
   syncColorsWithDatabase,
@@ -18,7 +19,6 @@ import {
 export function useAuthForm(): UseAuthFormInterface {
   let url: string
   const route = useRoute()
-  const router = useRouter()
   const lang = (route.params.lang as string) || 'en'
 
   async function submitForm(
@@ -26,10 +26,10 @@ export function useAuthForm(): UseAuthFormInterface {
   ): Promise<void> {
     switch (true) {
       case !('password_confirmation' in data):
-        url = appUrl() + '/login'
+        url = '/login'
         break
       case 'password_confirmation' in data:
-        url = appUrl() + '/register'
+        url = '/register'
         break
       default:
         throw Error
@@ -50,7 +50,7 @@ export function useAuthForm(): UseAuthFormInterface {
     data: LoginFieldsInterface | RegisterFieldsInterface
   ): Promise<void> {
     await submitForm(data)
-    router.push(`/${lang}/settings#modules`)
+    navigateToUrl(`/${lang}/entities`)
   }
 
   return {
