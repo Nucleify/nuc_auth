@@ -1,31 +1,33 @@
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { logout, setUserToSessionStorage } from 'atomic'
+import * as atomic from 'atomic'
 
 describe('logout', (): void => {
   beforeEach((): void => {
+    vi.clearAllMocks()
+    atomic.mockGlobalFetch(vi, {})
     if (typeof window !== 'undefined') {
       window.sessionStorage.clear()
     }
   })
 
   it('should be a function that can be called', (): void => {
-    expect(typeof logout).toBe('function')
+    expect(typeof atomic.logout).toBe('function')
   })
 
-  it('should execute without throwing errors', (): void => {
-    expect(() => logout()).not.toThrow()
+  it('should execute without throwing errors', async (): Promise<void> => {
+    await expect(atomic.logout()).resolves.not.toThrow()
   })
 
-  it('should handle the complete logout flow', (): void => {
+  it('should handle the complete logout flow', async (): Promise<void> => {
     try {
-      logout()
+      await atomic.logout()
     } catch (error) {
       expect(error).toBeInstanceOf(Error)
     }
   })
 
-  it('should clear user data from session storage when logged out', (): void => {
+  it('should clear user data from session storage when logged out', async (): Promise<void> => {
     const mockUser = {
       id: 1,
       name: 'Test User',
@@ -36,13 +38,13 @@ describe('logout', (): void => {
       email_verified_at: '2024-01-01T00:00:00Z',
     }
 
-    setUserToSessionStorage(mockUser)
+    atomic.setUserToSessionStorage(mockUser)
 
     expect(window.sessionStorage.getItem('user_id')).toBe('1')
     expect(window.sessionStorage.getItem('user_name')).toBe('Test User')
     expect(window.sessionStorage.getItem('user_email')).toBe('test@example.com')
 
-    logout()
+    await atomic.logout()
 
     const sessionStorageKeys = Object.keys(window.sessionStorage)
     const userKeys = sessionStorageKeys.filter((key) => key.startsWith('user_'))
@@ -53,10 +55,10 @@ describe('logout', (): void => {
     })
   })
 
-  it('should handle logout when no user data exists', (): void => {
+  it('should handle logout when no user data exists', async (): Promise<void> => {
     expect(Object.keys(window.sessionStorage)).toHaveLength(0)
 
-    expect(() => logout()).not.toThrow()
+    await atomic.logout()
 
     expect(Object.keys(window.sessionStorage)).toHaveLength(7)
 
@@ -74,7 +76,7 @@ describe('logout', (): void => {
     })
   })
 
-  it('should clear all user-related session storage keys', (): void => {
+  it('should clear all user-related session storage keys', async (): Promise<void> => {
     const mockUser = {
       id: 1,
       name: 'Test User',
@@ -85,11 +87,11 @@ describe('logout', (): void => {
       email_verified_at: '2024-01-01T00:00:00Z',
     }
 
-    setUserToSessionStorage(mockUser)
+    atomic.setUserToSessionStorage(mockUser)
 
     window.sessionStorage.setItem('other_data', 'should_remain')
 
-    logout()
+    await atomic.logout()
 
     expect(window.sessionStorage.getItem('user_id')).toBe('')
     expect(window.sessionStorage.getItem('user_name')).toBe('')
@@ -102,11 +104,11 @@ describe('logout', (): void => {
     expect(window.sessionStorage.getItem('other_data')).toBe('should_remain')
   })
 
-  it('should handle logout with partial user data', (): void => {
+  it('should handle logout with partial user data', async (): Promise<void> => {
     window.sessionStorage.setItem('user_id', '1')
     window.sessionStorage.setItem('user_name', 'Test User')
 
-    logout()
+    await atomic.logout()
 
     expect(window.sessionStorage.getItem('user_id')).toBe('')
     expect(window.sessionStorage.getItem('user_name')).toBe('')
