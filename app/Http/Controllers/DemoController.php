@@ -6,8 +6,10 @@ use App\Models\Article;
 use App\Models\Contact;
 use App\Models\Money;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -17,14 +19,7 @@ class DemoController extends Controller
 
     public function store(): JsonResponse
     {
-        $demoUser = User::create([
-            'name' => 'Demo User',
-            'email' => 'demo_' . Str::uuid() . '@nucleify.io',
-            'password' => Hash::make(Str::random(32)),
-            'role' => 'demo',
-            'is_demo' => true,
-            'demo_expires_at' => now()->addMinutes(self::DEMO_TTL_MINUTES),
-        ]);
+        $demoUser = $this->createDemoUser();
 
         $this->seedDemoData($demoUser);
 
@@ -34,6 +29,44 @@ class DemoController extends Controller
             'message' => 'Demo session created',
             'user' => $demoUser->only(['id', 'name', 'email', 'role', 'created_at', 'updated_at']),
         ]);
+    }
+
+    private function createDemoUser(): User
+    {
+        $attributes = [
+            'name' => 'Demo User',
+            'email' => 'demo_' . Str::uuid() . '@nucleify.io',
+            'password' => Hash::make(Str::random(32)),
+            'role' => 'demo',
+            'is_demo' => true,
+            'demo_expires_at' => now()->addMinutes(self::DEMO_TTL_MINUTES),
+        ];
+
+        try {
+            return User::create($attributes);
+        } catch (QueryException $exception) {
+            // Production-safe recovery when Postgres sequence falls behind table max(id).
+            if (!$this->isUsersPrimaryKeyConflict($exception)) {
+                throw $exception;
+            }
+
+            $this->syncUsersIdSequence();
+
+            return User::create($attributes);
+        }
+    }
+
+    private function isUsersPrimaryKeyConflict(QueryException $exception): bool
+    {
+        return ($exception->errorInfo[0] ?? null) === '23505'
+            && str_contains((string) ($exception->errorInfo[2] ?? ''), 'users_pkey');
+    }
+
+    private function syncUsersIdSequence(): void
+    {
+        DB::statement(
+            "SELECT setval(pg_get_serial_sequence('users', 'id'), COALESCE(MAX(id), 1), true) FROM users"
+        );
     }
 
     private function seedDemoData(User $user): void
