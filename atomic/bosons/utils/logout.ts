@@ -6,7 +6,7 @@ export async function logout(): Promise<void> {
   const lang = (useRoute().params.lang as string) || 'en'
 
   await apiHandle({
-    url: '/logout',
+    url: appUrl() + '/logout',
     method: 'POST',
     onSuccess: () => {
       removeUserFromSessionStorage()

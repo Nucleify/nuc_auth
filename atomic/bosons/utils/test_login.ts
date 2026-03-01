@@ -9,6 +9,7 @@ export async function testLogin(role: UserRoleType): Promise<void> {
     test_admin: { email: '', password: '' },
     test_tech: { email: '', password: '' },
     super_admin: { email: '', password: '' },
+    demo: { email: '', password: '' },
   }
 
   const userCredentials = credentials[role]
