@@ -5,10 +5,10 @@
       <div class="auth-card-header-container">
         <div class="auth-card-header">
           <ad-logo :dimensions="64" ad-type="main" />
-          <ad-heading :tag="1" text="Welcome Back" />
+          <ad-heading :tag="1" :text="t('auth-login-heading')" />
 
-          <ad-paragraph class="mb-2" text="Don't have an account?">
-            <ad-anchor :href="`/${lang}/register`" label="Create today!" />
+          <ad-paragraph class="mb-2" :text="t('auth-login-no-account')">
+            <ad-anchor :href="`/${lang}/register`" :label="t('auth-login-create')" />
           </ad-paragraph>
         </div>
       </div>
@@ -24,10 +24,10 @@
             class="auth-input-text"
             :autofocus="field.autofocus"
           />
-          <ad-label :for="field.id" :label="field.label" />
+          <ad-label :for="field.id" :label="t(field.label)" />
         </ad-float-label>
 
-        <ad-button label="Log In" type="submit" />
+        <ad-button :label="t('auth-login-submit')" type="submit" />
       </form>
     </template>
   </ad-card>
@@ -38,10 +38,12 @@
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { useAuthForm } from 'atomic'
 
 const route = useRoute()
+const { t } = useI18n()
 const lang = computed(() => (route.params.lang as string) || 'en')
 
 const { submitAndGo, loginFields, loginInputs } = useAuthForm()

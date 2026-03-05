@@ -5,10 +5,10 @@
       <template #header>
         <div class="auth-card-header-container">
           <div class="auth-card-header">
-            <ad-heading :tag="1" text="Register" />
+            <ad-heading :tag="1" :text="t('auth-register-heading')" />
 
-            <ad-paragraph text="Already have an account?">
-              <ad-anchor :href="`/${lang}/login`" label="Log in!" />
+            <ad-paragraph :text="t('auth-register-has-account')">
+              <ad-anchor :href="`/${lang}/login`" :label="t('auth-register-login')" />
             </ad-paragraph>
           </div>
         </div>
@@ -49,10 +49,10 @@
               "
             />
 
-            <ad-label :for="field.id" :label="field.label" />
+            <ad-label :for="field.id" :label="t(field.label)" />
           </ad-float-label>
 
-          <ad-button label="Register" type="submit" />
+          <ad-button :label="t('auth-register-submit')" type="submit" />
         </form>
       </template>
     </ad-card>
@@ -62,10 +62,12 @@
 <script setup lang="ts">
 import { useRoute } from 'nuxt/app'
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 import { isEmpty, passwordsMatch, useAuthForm } from 'atomic'
 
 const route = useRoute()
+const { t } = useI18n()
 const lang = computed(() => (route.params.lang as string) || 'en')
 
 const { submitAndGo, registerFields, registerInputs } = useAuthForm()

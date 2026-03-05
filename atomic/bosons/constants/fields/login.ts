@@ -15,8 +15,8 @@ export const loginFields: Ref<LoginFieldsInterface> = ref<LoginFieldsInterface>(
 )
 
 const inputData: readonly [LoginFieldKey, string, string, string, boolean][] = [
-  ['email', 'email', 'email', 'Email Address', false],
-  ['password', 'password', 'password', 'Password', false],
+  ['email', 'email', 'email', 'auth-field-email', false],
+  ['password', 'password', 'password', 'auth-field-password', false],
 ] as const
 
 export const loginInputs: readonly InputInterface<LoginFieldKey>[] =

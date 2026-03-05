@@ -22,14 +22,14 @@ const registerInputData: readonly [
   string,
   boolean,
 ][] = [
-  ['name', 'text', 'name', 'Full Name', true],
-  ['email', 'email', 'email', 'Email Address', false],
-  ['password', 'password', 'password', 'Password', false],
+  ['name', 'text', 'name', 'auth-field-full-name', true],
+  ['email', 'email', 'email', 'auth-field-email', false],
+  ['password', 'password', 'password', 'auth-field-password', false],
   [
     'password_confirmation',
     'password',
     'password_confirmation',
-    'Confirm Password',
+    'auth-field-confirm-password',
     false,
   ],
 ] as const
