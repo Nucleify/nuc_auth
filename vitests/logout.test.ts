@@ -60,13 +60,16 @@ describe('logout', (): void => {
 
     await atomic.logout()
 
-    expect(Object.keys(window.sessionStorage)).toHaveLength(7)
+    expect(Object.keys(window.sessionStorage)).toHaveLength(10)
 
     const userKeys = [
       'user_id',
       'user_name',
       'user_email',
       'user_role',
+      'user_phone_number',
+      'user_language',
+      'user_country',
       'user_created_at',
       'user_updated_at',
       'user_email_verified_at',
@@ -97,6 +100,8 @@ describe('logout', (): void => {
     expect(window.sessionStorage.getItem('user_name')).toBe('')
     expect(window.sessionStorage.getItem('user_email')).toBe('')
     expect(window.sessionStorage.getItem('user_role')).toBe('')
+    expect(window.sessionStorage.getItem('user_language')).toBe('')
+    expect(window.sessionStorage.getItem('user_country')).toBe('')
     expect(window.sessionStorage.getItem('user_created_at')).toBe('')
     expect(window.sessionStorage.getItem('user_updated_at')).toBe('')
     expect(window.sessionStorage.getItem('user_email_verified_at')).toBe('')
