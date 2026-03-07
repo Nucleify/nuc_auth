@@ -5,7 +5,7 @@ import type {
   InputInterface,
   RegisterFieldKey,
   RegisterFieldsInterface,
-} from 'atomic'
+} from 'nucleify'
 
 export const registerFields: Ref<RegisterFieldsInterface> =
   ref<RegisterFieldsInterface>({

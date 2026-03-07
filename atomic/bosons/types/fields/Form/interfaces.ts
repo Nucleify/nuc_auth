@@ -5,7 +5,7 @@ import type {
   LoginInputInterface,
   RegisterFieldsInterface,
   RegisterInputInterface,
-} from 'atomic'
+} from 'nucleify'
 
 export interface UseAuthFormInterface {
   loginFields: Ref<LoginFieldsInterface>

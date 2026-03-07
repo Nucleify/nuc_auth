@@ -40,7 +40,7 @@ import { useRoute } from 'nuxt/app'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { useAuthForm } from 'atomic'
+import { useAuthForm } from 'nucleify'
 
 const route = useRoute()
 const { t } = useI18n()

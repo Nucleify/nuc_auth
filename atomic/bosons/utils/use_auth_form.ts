@@ -4,7 +4,7 @@ import type {
   LoginFieldsInterface,
   RegisterFieldsInterface,
   UseAuthFormInterface,
-} from 'atomic'
+} from 'nucleify'
 import {
   apiHandle,
   getAndSetUser,
@@ -14,7 +14,7 @@ import {
   registerFields,
   registerInputs,
   syncColorsWithDatabase,
-} from 'atomic'
+} from 'nucleify'
 
 export function useAuthForm(): UseAuthFormInterface {
   let url: string

@@ -5,7 +5,7 @@ import type {
   InputInterface,
   LoginFieldKey,
   LoginFieldsInterface,
-} from 'atomic'
+} from 'nucleify'
 
 export const loginFields: Ref<LoginFieldsInterface> = ref<LoginFieldsInterface>(
   {

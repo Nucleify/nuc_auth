@@ -1,6 +1,6 @@
 import { navigateTo, useRoute } from 'nuxt/app'
 
-import { apiRequest, getAndSetUser, syncColorsWithDatabase } from 'atomic'
+import { apiRequest, getAndSetUser, syncColorsWithDatabase } from 'nucleify'
 
 export async function demoLogin(): Promise<void> {
   const route = useRoute()

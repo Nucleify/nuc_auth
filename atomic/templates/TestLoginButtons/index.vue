@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from '#app'
 
-import { testLogin } from 'atomic'
+import { testLogin } from 'nucleify'
 
 const route = useRoute()
 const router = useRouter()

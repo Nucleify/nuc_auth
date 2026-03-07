@@ -1,6 +1,6 @@
 import { navigateTo, useRoute } from 'nuxt/app'
 
-import { apiHandle, removeUserFromSessionStorage } from 'atomic'
+import { apiHandle, removeUserFromSessionStorage } from 'nucleify'
 
 export async function logout(): Promise<void> {
   const lang = (useRoute().params.lang as string) || 'en'

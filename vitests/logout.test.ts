@@ -1,27 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import * as atomic from 'atomic'
+import * as nucleify from 'nucleify'
 
 describe('logout', (): void => {
   beforeEach((): void => {
     vi.clearAllMocks()
-    atomic.mockGlobalFetch(vi, {})
+    nucleify.mockGlobalFetch(vi, {})
     if (typeof window !== 'undefined') {
       window.sessionStorage.clear()
     }
   })
 
   it('should be a function that can be called', (): void => {
-    expect(typeof atomic.logout).toBe('function')
+    expect(typeof nucleify.logout).toBe('function')
   })
 
   it('should execute without throwing errors', async (): Promise<void> => {
-    await expect(atomic.logout()).resolves.not.toThrow()
+    await expect(nucleify.logout()).resolves.not.toThrow()
   })
 
   it('should handle the complete logout flow', async (): Promise<void> => {
     try {
-      await atomic.logout()
+      await nucleify.logout()
     } catch (error) {
       expect(error).toBeInstanceOf(Error)
     }
@@ -38,13 +38,13 @@ describe('logout', (): void => {
       email_verified_at: '2024-01-01T00:00:00Z',
     }
 
-    atomic.setUserToSessionStorage(mockUser)
+    nucleify.setUserToSessionStorage(mockUser)
 
     expect(window.sessionStorage.getItem('user_id')).toBe('1')
     expect(window.sessionStorage.getItem('user_name')).toBe('Test User')
     expect(window.sessionStorage.getItem('user_email')).toBe('test@example.com')
 
-    await atomic.logout()
+    await nucleify.logout()
 
     const sessionStorageKeys = Object.keys(window.sessionStorage)
     const userKeys = sessionStorageKeys.filter((key) => key.startsWith('user_'))
@@ -58,7 +58,7 @@ describe('logout', (): void => {
   it('should handle logout when no user data exists', async (): Promise<void> => {
     expect(Object.keys(window.sessionStorage)).toHaveLength(0)
 
-    await atomic.logout()
+    await nucleify.logout()
 
     expect(Object.keys(window.sessionStorage)).toHaveLength(10)
 
@@ -90,11 +90,11 @@ describe('logout', (): void => {
       email_verified_at: '2024-01-01T00:00:00Z',
     }
 
-    atomic.setUserToSessionStorage(mockUser)
+    nucleify.setUserToSessionStorage(mockUser)
 
     window.sessionStorage.setItem('other_data', 'should_remain')
 
-    await atomic.logout()
+    await nucleify.logout()
 
     expect(window.sessionStorage.getItem('user_id')).toBe('')
     expect(window.sessionStorage.getItem('user_name')).toBe('')
@@ -113,7 +113,7 @@ describe('logout', (): void => {
     window.sessionStorage.setItem('user_id', '1')
     window.sessionStorage.setItem('user_name', 'Test User')
 
-    await atomic.logout()
+    await nucleify.logout()
 
     expect(window.sessionStorage.getItem('user_id')).toBe('')
     expect(window.sessionStorage.getItem('user_name')).toBe('')

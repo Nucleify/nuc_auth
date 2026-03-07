@@ -1,5 +1,5 @@
-import type { NucUserObjectInterface } from 'atomic'
-import { sessionStorageSetItem } from 'atomic'
+import type { NucUserObjectInterface } from 'nucleify'
+import { sessionStorageSetItem } from 'nucleify'
 
 export function setUserToSessionStorage(
   user: NucUserObjectInterface | null | undefined
