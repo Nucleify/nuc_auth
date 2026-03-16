@@ -2,6 +2,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import * as nucleify from 'nucleify'
 
+vi.mock('nuxt/app', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('nuxt/app')>()
+  return {
+    ...actual,
+    navigateTo: vi.fn().mockResolvedValue(undefined),
+    useRoute: vi.fn(() => ({ params: { lang: 'en' } })),
+  }
+})
+
 describe('logout', (): void => {
   beforeEach((): void => {
     vi.clearAllMocks()

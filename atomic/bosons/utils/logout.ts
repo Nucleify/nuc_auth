@@ -8,9 +8,9 @@ export async function logout(): Promise<void> {
   await apiHandle({
     url: appUrl() + '/logout',
     method: 'POST',
-    onSuccess: () => {
+    onSuccess: async () => {
       removeUserFromSessionStorage()
-      navigateTo(`/${lang}/login`)
+      await navigateTo(`/${lang}/login`)
     },
   })
 }
