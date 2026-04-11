@@ -1,10 +1,6 @@
 <template>
   <div class="test-login-buttons-container">
-    <ad-button
-      icon="prime:crown"
-      rounded
-      @click="loginAndGo('admin')"
-    />
+    <ad-button icon="prime:crown" rounded @click="loginAndGo('admin')" />
     <ad-button
       icon="prime:user"
       severity="secondary"
