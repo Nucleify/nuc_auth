@@ -13,6 +13,7 @@ export function setUserToSessionStorage(
     name: user.name,
     email: user.email,
     phone_number: user.phone_number,
+    avatar: user.avatar,
     language: user.language,
     country: user.country,
     role: user.role,

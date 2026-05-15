@@ -1,16 +1,13 @@
 import { navigateTo, useRoute } from 'nuxt/app'
 
-import { apiHandle, removeUserFromSessionStorage } from 'nucleify'
+import { removeUserFromSessionStorage } from 'nucleify'
+
+import { useSupabaseClient } from '../../../../../nuxt/composables/supabase/client'
 
 export async function logout(): Promise<void> {
   const lang = (useRoute().params.lang as string) || 'en'
-
-  await apiHandle({
-    url: appUrl() + '/logout',
-    method: 'POST',
-    onSuccess: async () => {
-      removeUserFromSessionStorage()
-      await navigateTo(`/${lang}/login`)
-    },
-  })
+  const supabase = useSupabaseClient()
+  await supabase.auth.signOut()
+  removeUserFromSessionStorage()
+  await navigateTo(`/${lang}/login`)
 }

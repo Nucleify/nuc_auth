@@ -14,7 +14,7 @@ export interface UseAuthFormInterface {
   registerInputs: readonly RegisterInputInterface[]
   submitForm: (
     data: LoginFieldsInterface | RegisterFieldsInterface
-  ) => Promise<void>
+  ) => Promise<boolean>
   submitAndGo: (
     data: LoginFieldsInterface | RegisterFieldsInterface
   ) => Promise<void>
