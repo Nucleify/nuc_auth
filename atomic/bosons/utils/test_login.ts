@@ -1,7 +1,6 @@
 import type { LoginFieldsInterface, UserRoleType } from 'nucleify'
 import { getAndSetUser, syncColorsWithDatabase, useAtomicToast } from 'nucleify'
-
-import { useSupabaseClient } from '../../../../../nuxt/composables/supabase/client'
+import { useSupabaseClient } from 'nuc_client'
 
 export async function testLogin(role: UserRoleType): Promise<void> {
   const { flashToast } = useAtomicToast()

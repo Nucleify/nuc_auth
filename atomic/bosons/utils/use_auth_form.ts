@@ -15,8 +15,7 @@ import {
   syncColorsWithDatabase,
   useAtomicToast,
 } from 'nucleify'
-
-import { useSupabaseClient } from '../../../../../nuxt/composables/supabase/client'
+import { useSupabaseClient } from 'nuc_client'
 
 export function useAuthForm(): UseAuthFormInterface {
   const route = useRoute()

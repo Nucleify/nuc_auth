@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import * as nucleify from 'nucleify'
 
-vi.mock('../../../nuxt/composables/supabase/client', () => ({
+vi.mock('nuc_client', () => ({
   useSupabaseClient: vi.fn(() => ({
     auth: {
       signOut: vi.fn().mockResolvedValue(undefined),

@@ -1,8 +1,7 @@
+import type { SupabaseClient } from '@supabase/supabase-js'
 import { navigateTo } from 'nuxt/app'
 
 import { getAndSetUser, syncColorsWithDatabase } from 'nucleify'
-
-import type { SupabaseClient } from '@supabase/supabase-js'
 
 export interface DemoLoginDeps {
   supabase: SupabaseClient
@@ -13,16 +12,11 @@ export interface DemoLoginDeps {
 
 function getCreateDemoUserUrl(): string {
   if (import.meta.client && typeof window !== 'undefined') {
-    return new URL('/api/dev/create-demo-user', window.location.origin).href
+    return new URL('/api/users/demo', window.location.origin).href
   }
-  return '/api/dev/create-demo-user'
+  return '/api/users/demo'
 }
 
-/**
- * Tworzy świeże konto + przykładowe dane (articles, contacts, money, files), loguje.
- * Composables (`useI18n`, `useSupabaseClient`, …) muszą być wywołane w `setup` komponentu
- * i przekazane w `deps` — nie wołaj ich wewnątrz tej funkcji z handlera kliknięcia.
- */
 export async function demoLogin(deps: DemoLoginDeps): Promise<void> {
   const { supabase, lang, t, flashToast } = deps
 

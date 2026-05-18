@@ -1,8 +1,8 @@
+import type { SupabaseClient } from '@supabase/supabase-js'
+
 import type { NucUserObjectInterface } from 'nucleify'
 import { setUserToSessionStorage, userRequests } from 'nucleify'
-
-import type { SupabaseClient } from '@supabase/supabase-js'
-import { useSupabaseClient } from '../../../../../nuxt/composables/supabase/client'
+import { useSupabaseClient } from 'nuc_client'
 
 export async function getAndSetUser(client?: SupabaseClient): Promise<void> {
   const supabase = client ?? useSupabaseClient()
