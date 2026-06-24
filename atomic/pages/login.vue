@@ -49,5 +49,12 @@ const route = useRoute()
 const { t } = useI18n()
 const lang = computed(() => (route.params.lang as string) || 'en')
 
-const { submitAndGo, loginFields, loginInputs } = useAuthForm()
+const { submitAndGo, loginFields, loginInputs } = useAuthForm(
+  'nuxt',
+  () => (route.params.lang as string) || 'en'
+)
 </script>
+
+<style lang="scss">
+@import 'index';
+</style>

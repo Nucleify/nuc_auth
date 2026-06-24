@@ -1,19 +1,16 @@
-import type { Ref } from 'vue'
-import { ref } from 'vue'
-
 import type {
   InputInterface,
   RegisterFieldKey,
   RegisterFieldsInterface,
+  RegisterInputInterface,
 } from 'nucleify'
 
-export const registerFields: Ref<RegisterFieldsInterface> =
-  ref<RegisterFieldsInterface>({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-  })
+export const initialRegisterFields: RegisterFieldsInterface = {
+  name: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
+}
 
 const registerInputData: readonly [
   RegisterFieldKey,
@@ -34,7 +31,7 @@ const registerInputData: readonly [
   ],
 ] as const
 
-export const registerInputs: readonly InputInterface<RegisterFieldKey>[] =
+export const registerInputs: readonly RegisterInputInterface[] =
   registerInputData.map(
     ([
       model,

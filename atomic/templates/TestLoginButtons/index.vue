@@ -21,6 +21,10 @@ const lang = (route.params.lang as string) || 'en'
 
 async function loginAndGo(role: string) {
   await testLogin(role)
-  router.push(`/${lang}/settings#modules`)
+  router.push(`/${lang}/entities`)
 }
 </script>
+
+<style lang="scss">
+@import 'index';
+</style>

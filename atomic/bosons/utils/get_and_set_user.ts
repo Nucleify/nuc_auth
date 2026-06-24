@@ -1,19 +1,16 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 import type { NucUserObjectInterface } from 'nucleify'
-import { setUserToSessionStorage, userRequests } from 'nucleify'
-import { useSupabaseClient } from 'nuc_client'
+import { getSupabaseClient, setUserToSessionStorage } from 'nucleify'
 
 export async function getAndSetUser(client?: SupabaseClient): Promise<void> {
-  const supabase = client ?? useSupabaseClient()
-  const { results }: ReturnType<typeof userRequests> = userRequests()
+  const supabase = client ?? getSupabaseClient()
 
   const {
     data: { user },
     error: authErr,
   } = await supabase.auth.getUser()
   if (authErr || !user) {
-    results.value = [] as never
     return
   }
 
@@ -24,7 +21,6 @@ export async function getAndSetUser(client?: SupabaseClient): Promise<void> {
     .maybeSingle()
 
   if (profileErr || !profile) {
-    results.value = [] as never
     return
   }
 
@@ -42,6 +38,5 @@ export async function getAndSetUser(client?: SupabaseClient): Promise<void> {
     email_verified_at: user.email_confirmed_at ?? undefined,
   }
 
-  results.value = mapped as never
   setUserToSessionStorage(mapped)
 }

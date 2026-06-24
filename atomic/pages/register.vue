@@ -73,7 +73,10 @@ const route = useRoute()
 const { t } = useI18n()
 const lang = computed(() => (route.params.lang as string) || 'en')
 
-const { submitAndGo, registerFields, registerInputs } = useAuthForm()
+const { submitAndGo, registerFields, registerInputs } = useAuthForm(
+  'nuxt',
+  () => (route.params.lang as string) || 'en'
+)
 
 onMounted((): void => {
   passwordsMatch(
@@ -82,3 +85,7 @@ onMounted((): void => {
   )
 })
 </script>
+
+<style lang="scss">
+@import 'index';
+</style>

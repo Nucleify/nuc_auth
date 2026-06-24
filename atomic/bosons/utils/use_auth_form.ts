@@ -1,99 +1,74 @@
-import { useRoute } from 'nuxt/app'
+'use client'
 
 import type {
+  AppFramework,
   LoginFieldsInterface,
   RegisterFieldsInterface,
-  UseAuthFormInterface,
+  UseAuthFormNextInterface,
+  UseAuthFormNuxtInterface,
 } from 'nucleify'
 import {
-  getAndSetUser,
-  loginFields,
+  createAuthFormState,
+  flashToast,
+  initialLoginFields,
+  initialRegisterFields,
   loginInputs,
   navigateToUrl,
-  registerFields,
   registerInputs,
+  submitAuthForm,
   syncColorsWithDatabase,
-  useAtomicToast,
 } from 'nucleify'
-import { useSupabaseClient } from 'nuc_client'
 
-export function useAuthForm(): UseAuthFormInterface {
-  const route = useRoute()
-  const lang = (route.params.lang as string) || 'en'
-  const { flashToast } = useAtomicToast()
+type LangSource = string | (() => string)
+
+function resolveLang(lang: LangSource): string {
+  return typeof lang === 'function' ? lang() : lang
+}
+
+export function useAuthForm(
+  framework: 'next',
+  lang?: LangSource
+): UseAuthFormNextInterface
+export function useAuthForm(
+  framework?: 'nuxt',
+  lang?: LangSource
+): UseAuthFormNuxtInterface
+export function useAuthForm(
+  framework: AppFramework = 'nuxt',
+  lang: LangSource = 'en'
+): UseAuthFormNextInterface | UseAuthFormNuxtInterface {
+  const { loginFields, setLoginFields, registerFields, setRegisterFields } =
+    createAuthFormState<LoginFieldsInterface, RegisterFieldsInterface>(
+      framework,
+      initialLoginFields,
+      initialRegisterFields
+    )
 
   async function submitForm(
     data: LoginFieldsInterface | RegisterFieldsInterface
   ): Promise<boolean> {
-    const supabase = useSupabaseClient()
-
-    if (!('password_confirmation' in data)) {
-      const login = data as LoginFieldsInterface
-      const { error } = await supabase.auth.signInWithPassword({
-        email: login.email,
-        password: login.password,
-      })
-      if (error) {
-        flashToast(error.message, 'error')
-        return false
-      }
-    } else {
-      const reg = data as RegisterFieldsInterface
-      if (reg.password !== reg.password_confirmation) {
-        flashToast('Password confirmation does not match', 'error')
-        return false
-      }
-      const { data: signUpData, error } = await supabase.auth.signUp({
-        email: reg.email,
-        password: reg.password,
-        options: { data: { name: reg.name } },
-      })
-      if (error) {
-        flashToast(error.message, 'error')
-        return false
-      }
-      const newUser = signUpData.user
-      if (!newUser) {
-        flashToast('Check your email to finish registration.', 'info')
-        return false
-      }
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .upsert(
-          {
-            id: newUser.id,
-            name: reg.name,
-            email: reg.email,
-            language: 'en',
-            country: 'poland',
-            role: 'user',
-          },
-          { onConflict: 'id' }
-        )
-      if (profileError) {
-        flashToast(profileError.message, 'error')
-        return false
-      }
-    }
-
-    await getAndSetUser(supabase)
-    await syncColorsWithDatabase()
-    return true
+    const ok = await submitAuthForm(data, (message, severity) => {
+      flashToast(message, severity)
+    })
+    if (ok) await syncColorsWithDatabase()
+    return ok
   }
 
   async function submitAndGo(
     data: LoginFieldsInterface | RegisterFieldsInterface
   ): Promise<void> {
     if (!(await submitForm(data))) return
-    navigateToUrl(`/${lang}/entities`)
+    navigateToUrl(`/${resolveLang(lang)}/entities`)
   }
 
   return {
     submitForm,
     submitAndGo,
     loginFields,
+    setLoginFields,
     loginInputs,
     registerFields,
+    setRegisterFields,
     registerInputs,
   }
 }

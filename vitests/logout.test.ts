@@ -2,14 +2,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import * as nucleify from 'nucleify'
 
-vi.mock('nuc_client', () => ({
-  useSupabaseClient: vi.fn(() => ({
-    auth: {
-      signOut: vi.fn().mockResolvedValue(undefined),
-    },
-  })),
-}))
-
 vi.mock('nuxt/app', async (importOriginal) => {
   const actual = await importOriginal<typeof import('nuxt/app')>()
   return {
@@ -23,6 +15,15 @@ describe('logout', (): void => {
   beforeEach((): void => {
     vi.clearAllMocks()
     nucleify.mockGlobalFetch(vi, {})
+
+    vi.spyOn(nucleify, 'getSupabaseClient').mockReturnValue({
+      auth: {
+        signOut: vi.fn().mockResolvedValue(undefined),
+      },
+    } as never)
+    vi.spyOn(nucleify, 'getCurrentLang').mockReturnValue('en')
+    vi.spyOn(nucleify, 'navigateToUrl').mockImplementation()
+
     if (typeof window !== 'undefined') {
       window.sessionStorage.clear()
     }
@@ -37,11 +38,7 @@ describe('logout', (): void => {
   })
 
   it('should handle the complete logout flow', async (): Promise<void> => {
-    try {
-      await nucleify.logout()
-    } catch (error) {
-      expect(error).toBeInstanceOf(Error)
-    }
+    await expect(nucleify.logout()).resolves.not.toThrow()
   })
 
   it('should clear user data from session storage when logged out', async (): Promise<void> => {
