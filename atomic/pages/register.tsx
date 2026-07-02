@@ -64,7 +64,7 @@ export function NucRegisterPage(): JSX.Element {
                 {isPasswordField ? (
                   <AdPassword
                     id={field.id}
-                    adType="main"
+                    nuiType="main"
                     className="auth-input-text"
                     autoFocus={field.autofocus}
                     value={registerFields[model]}
@@ -86,7 +86,7 @@ export function NucRegisterPage(): JSX.Element {
                 ) : (
                   <AdInputText
                     id={field.id}
-                    adType="main"
+                    nuiType="main"
                     type={field.type}
                     className="auth-input-text"
                     autoFocus={field.autofocus}

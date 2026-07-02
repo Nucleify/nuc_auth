@@ -4,7 +4,7 @@
     <template #header>
       <div class="auth-card-header-container">
         <div class="auth-card-header">
-          <ad-logo :dimensions="64" ad-type="main" />
+          <ad-logo :dimensions="64" nui-type="main" />
           <ad-heading :tag="1" :text="t('auth-login-heading')" />
 
           <ad-paragraph class="mb-2" :text="t('auth-login-no-account')">
@@ -22,7 +22,7 @@
           <ad-input-text
             :id="field.id"
             v-model="loginFields[field.model]"
-            ad-type="main"
+            nui-type="main"
             :type="field.type"
             class="auth-input-text"
             :autofocus="field.autofocus"

@@ -42,7 +42,7 @@ export function NucLoginPage(): JSX.Element {
         header={
           <div className="auth-card-header-container">
             <div className="auth-card-header">
-              <AdLogo dimensions={64} adType="main" />
+              <AdLogo dimensions={64} nuiType="main" />
               <AdHeading tag={1} text={t('auth-login-heading')} />
               <AdParagraph className="mb-2" text={t('auth-login-no-account')}>
                 <a href={`/${lang}/register`}>{t('auth-login-create')}</a>
@@ -59,7 +59,7 @@ export function NucLoginPage(): JSX.Element {
               <AdFloatLabel key={field.id}>
                 <AdInputText
                   id={field.id}
-                  adType="main"
+                  nuiType="main"
                   type={field.type}
                   className="auth-input-text"
                   autoFocus={field.autofocus}

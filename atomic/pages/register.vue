@@ -23,7 +23,7 @@
               v-if="field.type !== 'password'"
               :id="field.id"
               v-model="registerFields[field.model]"
-              ad-type="main"
+              nui-type="main"
               :type="field.type"
               class="auth-input-text"
               :autofocus="field.autofocus"
@@ -33,7 +33,7 @@
               v-else
               :id="field.id"
               v-model="registerFields[field.model]"
-              ad-type="main"
+              nui-type="main"
               class="auth-input-text"
               :autofocus="field.autofocus"
               :passwords-match="
